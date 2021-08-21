@@ -21,8 +21,18 @@ model_name = 'HooshvareLab/bert-fa-zwnj-base'
 config = {
     "model_name": model_name,
     "num_labels": len(label2index),
-    "max_length": 85
+    "max_length": 85,
+    'batch_size':16
 }
+lstm_config = {
+    "embedding_dim" : 400,
+    "num_hidden_nodes" : 32,
+    "num_output_nodes" : len(label2index),
+    "num_layers" : 2,
+    "bidirection" : True,
+    "dropout" : 0.3
+}
+
 
 path_embeddings = '/content/drive/MyDrive/data_sets/PERLEX/embeddings/'
 path_fasttext = '/content/drive/MyDrive/data_sets/PERLEX/embeddings/fasttext.bin'
