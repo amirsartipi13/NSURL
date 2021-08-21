@@ -1,4 +1,4 @@
-from src.perlex_project.utils import save_obj
+from src.utils import save_obj
 import numpy as np
 from keras.preprocessing.sequence import pad_sequences
 
