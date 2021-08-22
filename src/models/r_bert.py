@@ -9,15 +9,15 @@ from src.settings import config
 
 
 class BertForSequenceClassification(BertPreTrainedModel):
-    def __init__(self, config):
+    def __init__(self, config ):
         super(BertForSequenceClassification, self).__init__(config)
         self.num_labels = config.num_labels
         self.bert = BertModel(config)
-        self.bert = AutoModelForSequenceClassification.from_pretrained(config.model_name, config.num_labels)
+        # self.bert = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels)
         self.cls_dropout = torch.nn.Dropout(0.3)  # dropout on CLS transformed token embedding
         self.ent_dropout = torch.nn.Dropout(0.3)  # dropout on average entity embedding
 
-        self.classifier = torch.nn.Linear(config.hidden_size * 3, self.config.num_labels)
+        self.classifier = torch.nn.Linear(config.hidden_size * 3, config.num_labels)
         self.init_weights()
 
     def forward(self, input_ids, attention_mask=None, e1_mask=None, e2_mask=None, labels=None,
