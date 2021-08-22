@@ -1,5 +1,7 @@
 import torch
 from torch import nn
+from src.measures import accuracy_per_class, f1_score_function
+from tqdm import tqdm
 
 
 class LSTM(nn.Module):
@@ -50,25 +52,38 @@ class LSTM(nn.Module):
 
         return outputs
 
-    def fit(self, train_data_loader, criterion, optimizer, epochs):
+    def train_lstm(self, iterator, optimizer, criterion, device):
         model = self
-        model.train()
-        for epoch in range(epochs):  # loop over the dataset multiple times
-            loss_list = []
-            for i, data in enumerate(train_data_loader, 0):
-                # get the inputs; data is a list of [inputs, labels]
-                inputs, labels = data
+        #initialize every epoch 
+        epoch_loss = 0
+        epoch_acc = 0
+        #set the model in training phase
+        model.train()  
+        for batch in iterator:
+            #resets the gradients after every batch
+            optimizer.zero_grad()   
+            batch = tuple(b.to(device) for b in batch)
 
-                # zero the parameter gradients
-                optimizer.zero_grad()
+            #retrieve text and no. of words
+            text, text_lengths = batch[0], batch[0].shape[1]
+            
+            #convert to 1D tensor
+            predictions = model(text, text_lengths).squeeze()
 
-                # forward + backward + optimize
-                outputs = model(inputs)
-                loss = criterion(outputs, labels)
-                loss.backward()
-                optimizer.step()
+            #compute the loss
+            loss = criterion(predictions, batch[1])        
 
-                # print statistics
-                loss_list.append(loss.item())
-
-        return model
+            #compute the binary accuracy
+            acc = accuracy_per_class(predictions, batch[1])   
+            
+            #backpropage the loss and compute the gradients
+            loss.backward()       
+            
+            #update the weights
+            optimizer.step()      
+            
+            #loss and accuracy
+            epoch_loss += loss.item()  
+            epoch_acc += acc 
+            
+        return epoch_loss / len(iterator), epoch_acc / len(iterator)
