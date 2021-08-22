@@ -4,7 +4,7 @@ import torch
 
 
 def f1_score_function(predictions, labels):
-    predictions_flat = np.argmax(predictions, axis=1).flatten()
+    predictions_flat = torch.argmax(predictions, axis=1).flatten()
     labels_flat = labels.flatten()
     return f1_score(labels_flat, predictions_flat, average='weighted')
 
