@@ -94,7 +94,7 @@ class DataSet:
         clean_sentences = []
         for i in range(0, len(data) - 4, 4):
             item = data[i].split('\t')
-            sentence = re.sub('[!@#$،.()]', '', item[1])
+            sentence = re.sub('[!@#$،.()]»«', '', item[1])
             label = data[i + 1]
             rows = self.make_dataframe_row(sentence, label)
             data_set_rows += rows
