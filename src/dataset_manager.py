@@ -35,17 +35,17 @@ class DataSet:
                 pre_process.add(ent.strip())
         return list(pre_process)
 
-    # def process_sentence(self, sentence, normilizer):
-    #     sentence = normilizer.normalize(sentence)
-    #     sentence = sentence.replace('<e1>', '[E11]').replace('</e1>', '[E12]').replace('<e2>', '[E21]').replace('</e2>',
-    #                                                                                                             '[E22]')
-    #     return sentence
-
     def process_sentence(self, sentence, normilizer):
         sentence = normilizer.normalize(sentence)
-        sentence = sentence.replace('<e1>', '[SEP]').replace('</e1>', '[SEP]').replace('<e2>', '[SEP]').replace('</e2>',
-                                                                                                                '[SEP]')
+        sentence = sentence.replace('<e1>', '[E11]').replace('</e1>', '[E12]').replace('<e2>', '[E21]').replace('</e2>',
+                                                                                                                '[E22]')
         return sentence
+
+    # def process_sentence(self, sentence, normilizer):
+    #     sentence = normilizer.normalize(sentence)
+    #     sentence = sentence.replace('<e1>', '[SEP]').replace('</e1>', '[SEP]').replace('<e2>', '[SEP]').replace('</e2>',
+    #                                                                                                             '[SEP]')
+    #     return sentence
 
     def get_e1p(self, text):
         sentence = self.tokenizer.tokenize(text)
