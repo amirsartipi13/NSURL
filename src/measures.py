@@ -4,7 +4,7 @@ import torch
 
 
 def f1_score_function(predictions, labels):
-    return f1_score(labels.detach().cpu().numpy(), torch.argmax(predictions, axis=1).detach().cpu().numpy(), average='weighted')
+    return f1_score(labels.detach().cpu().numpy().astype(int), torch.argmax(predictions, axis=1).detach().cpu().numpy().astype(int), average='weighted')
 
 
 def accuracy_per_class(predictions, labels, class_number):
